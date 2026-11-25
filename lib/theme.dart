@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class AppColors {
-  static const green = Color(0xFF00D09E);
+  static const green = Color(0xFF1FD4A5);
+  static const ink = Color(0xFF1E1E1E);
+  static const grey = Color(0xFFF5F5F5);
+  static const muted = Color(0xFF9A9A9A);
   static const mint = Color(0xFFF1FFF3);
   static const dark = Color(0xFF052224);
   static const blue = Color(0xFF0068FF);

@@ -93,18 +93,19 @@ class TxnTile extends StatelessWidget {
   }
 }
 
-Future<void> showAddTransaction(BuildContext context) {
+Future<void> showAddTransaction(BuildContext context, {bool expense = true}) {
   return showModalBottomSheet(
     context: context,
     isScrollControlled: true,
     showDragHandle: true,
     constraints: const BoxConstraints(maxWidth: 520),
-    builder: (_) => const _AddSheet(),
+    builder: (_) => _AddSheet(expense: expense),
   );
 }
 
 class _AddSheet extends StatefulWidget {
-  const _AddSheet();
+  const _AddSheet({this.expense = true});
+  final bool expense;
 
   @override
   State<_AddSheet> createState() => _AddSheetState();
@@ -113,8 +114,8 @@ class _AddSheet extends StatefulWidget {
 class _AddSheetState extends State<_AddSheet> {
   final _title = TextEditingController();
   final _amount = TextEditingController();
-  bool _expense = true;
-  String _cat = expenseCategories.first.name;
+  late bool _expense = widget.expense;
+  late String _cat = (widget.expense ? expenseCategories : incomeCategories).first.name;
   DateTime _date = DateTime.now();
   String? _err;
 
