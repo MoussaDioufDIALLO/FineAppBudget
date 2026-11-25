@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../theme.dart';
 
-/// Page type du prototype : bandeau vert + carte arrondie claire.
+/// Page type : fond blanc, titre à gauche, bouton retour rond.
 class FwScaffold extends StatelessWidget {
   const FwScaffold({super.key, required this.title, required this.child, this.trailing});
   final String title;
@@ -14,48 +14,105 @@ class FwScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     final canPop = Navigator.of(context).canPop();
     return Scaffold(
-      backgroundColor: AppColors.green,
+      backgroundColor: Colors.white,
       body: SafeArea(
         bottom: false,
         child: Column(children: [
-          SizedBox(
-            height: 72,
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
             child: Row(children: [
-              SizedBox(
-                width: 56,
-                child: canPop
-                    ? IconButton(
-                        icon: const Icon(Icons.arrow_back, color: Colors.white),
-                        onPressed: () => Navigator.maybePop(context))
-                    : null,
-              ),
+              if (canPop)
+                GestureDetector(
+                  onTap: () => Navigator.maybePop(context),
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                        color: AppColors.grey, borderRadius: BorderRadius.circular(14)),
+                    child: const Icon(Icons.arrow_back, size: 20, color: AppColors.ink),
+                  ),
+                )
+              else
+                const SizedBox(width: 8),
+              const SizedBox(width: 14),
               Expanded(
-                child: Center(
-                  child: Text(title,
-                      style: const TextStyle(
-                          fontSize: 22, fontWeight: FontWeight.w800, color: AppColors.dark)),
-                ),
+                child: Text(title,
+                    style: const TextStyle(
+                        fontSize: 22, fontWeight: FontWeight.w700, color: AppColors.ink)),
               ),
-              SizedBox(width: 56, child: trailing),
+              if (trailing != null) trailing!,
             ]),
           ),
           Expanded(
-            child: Container(
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                color: AppColors.mint,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(48)),
-              ),
-              child: Center(
-                child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 520), child: child),
-              ),
+            child: Center(
+              child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 520), child: child),
             ),
           ),
         ]),
       ),
     );
   }
+}
+
+/// Fenêtre de confirmation : icône, texte, bouton clair "oui" et noir "non".
+Future<bool> confirmDialog(
+  BuildContext context, {
+  required IconData icon,
+  required String title,
+  required String message,
+  String yes = 'Oui',
+  String no = 'Pas maintenant',
+}) async {
+  final r = await showDialog<bool>(
+    context: context,
+    builder: (ctx) => Dialog(
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          Container(
+            width: 72,
+            height: 72,
+            decoration: BoxDecoration(
+                color: AppColors.green.withOpacity(0.15), shape: BoxShape.circle),
+            child: Icon(icon, size: 34, color: AppColors.green),
+          ),
+          const SizedBox(height: 16),
+          Text(title,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                  fontSize: 18, fontWeight: FontWeight.w700, color: AppColors.ink)),
+          const SizedBox(height: 8),
+          Text(message,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 13, color: AppColors.muted)),
+          const SizedBox(height: 20),
+          Row(children: [
+            Expanded(
+              child: FilledButton(
+                style: FilledButton.styleFrom(
+                    backgroundColor: AppColors.grey, foregroundColor: AppColors.ink),
+                onPressed: () => Navigator.pop(ctx, true),
+                child: Text(yes),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: FilledButton(
+                style: FilledButton.styleFrom(
+                    backgroundColor: AppColors.ink, foregroundColor: Colors.white),
+                onPressed: () => Navigator.pop(ctx, false),
+                child: Text(no),
+              ),
+            ),
+          ]),
+        ]),
+      ),
+    ),
+  );
+  return r ?? false;
 }
 
 class PasswordField extends StatefulWidget {

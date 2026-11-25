@@ -23,36 +23,35 @@ class TransactionsPage extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(24, 16, 24, 4),
           child: Text(key[0].toUpperCase() + key.substring(1),
               style: const TextStyle(
-                  fontSize: 20, fontWeight: FontWeight.w800, color: AppColors.dark)),
+                  fontSize: 16, fontWeight: FontWeight.w700, color: AppColors.ink)),
         ));
       }
       rows.add(TxnTile(t));
     }
-    return Column(
+    return ColoredBox(
+      color: AppColors.grey,
+      child: Column(
       children: [
         Container(
           width: double.infinity,
-          decoration: const BoxDecoration(
-            color: AppColors.green,
-            borderRadius: BorderRadius.vertical(bottom: Radius.circular(36)),
-          ),
-          padding: const EdgeInsets.fromLTRB(24, 16, 24, 20),
+          color: Colors.white,
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
           child: SafeArea(
             bottom: false,
             child: Column(children: [
               const Text('Transactions',
                   style: TextStyle(
-                      fontSize: 22, fontWeight: FontWeight.w800, color: AppColors.dark)),
+                      fontSize: 22, fontWeight: FontWeight.w700, color: AppColors.ink)),
               const SizedBox(height: 12),
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
-                    color: AppColors.mint,
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(18),
                     boxShadow: softShadow(0.1)),
                 child: Column(children: [
-                  const Text('Solde total'),
+                  const Text('Solde total', style: TextStyle(fontSize: 12, color: AppColors.muted)),
                   Text(money.format(store.balance),
                       style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w800)),
                 ]),
@@ -74,6 +73,6 @@ class TransactionsPage extends StatelessWidget {
               : ListView(padding: const EdgeInsets.only(bottom: 96), children: rows),
         ),
       ],
-    );
+    ));
   }
 }

@@ -4,6 +4,7 @@ import 'dashboard_page.dart';
 import 'profile_page.dart';
 import 'stats_page.dart';
 import 'transactions_page.dart';
+import '../theme.dart';
 import 'widgets.dart';
 
 /// Mobile : barre de navigation en bas. Desktop / tablette : rail latéral.
@@ -60,45 +61,68 @@ class _HomeShellState extends State<HomeShell> {
       bottomNavigationBar: wide
           ? null
           : Container(
-              decoration: const BoxDecoration(
-                color: Color(0xFFDFF7E2),
-                borderRadius: BorderRadius.vertical(top: Radius.circular(36)),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: softShadow(0.08),
               ),
               child: SafeArea(
                 top: false,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      for (var k = 0; k < _labels.length; k++)
-                        Semantics(
+                child: Row(
+                  children: [
+                    for (var k = 0; k < _labels.length; k++)
+                      Expanded(
+                        child: Semantics(
                           label: _labels[k],
                           button: true,
                           child: GestureDetector(
                             behavior: HitTestBehavior.opaque,
                             onTap: () => setState(() => _i = k),
                             child: AnimatedContainer(
-                              duration: const Duration(milliseconds: 180),
-                              width: 56,
-                              height: 48,
+                              duration: const Duration(milliseconds: 200),
+                              height: 62,
                               decoration: BoxDecoration(
-                                color: _i == k ? const Color(0xFF00D09E) : Colors.transparent,
-                                borderRadius: BorderRadius.circular(20),
+                                gradient: _i == k
+                                    ? LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [
+                                          AppColors.green.withOpacity(0.18),
+                                          Colors.white,
+                                        ],
+                                      )
+                                    : null,
+                                border: Border(
+                                  top: BorderSide(
+                                    color: _i == k ? AppColors.green : Colors.transparent,
+                                    width: 2.5,
+                                  ),
+                                ),
                               ),
-                              child: Icon(_icons[k],
-                                  size: 26, color: const Color(0xFF052224)),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(_icons[k],
+                                      size: 24,
+                                      color: _i == k ? AppColors.green : AppColors.ink),
+                                  const SizedBox(height: 3),
+                                  Text(_labels[k],
+                                      style: TextStyle(
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.ink)),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                    ],
-                  ),
+                      ),
+                  ],
                 ),
               ),
             ),
-      floatingActionButton: _i <= 1
+      floatingActionButton: _i == 1
           ? FloatingActionButton(
-              backgroundColor: const Color(0xFF00D09E),
+              backgroundColor: AppColors.green,
               onPressed: () => showAddTransaction(context),
               child: const Icon(Icons.add),
             )

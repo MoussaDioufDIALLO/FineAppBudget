@@ -21,21 +21,20 @@ class StatsPage extends StatelessWidget {
         .map((d) => d.income > d.expense ? d.income : d.expense)
         .fold(0.0, (a, b) => a > b ? a : b);
 
-    return ListView(
+    return ColoredBox(
+      color: AppColors.grey,
+      child: ListView(
       padding: const EdgeInsets.only(bottom: 32),
       children: [
         Container(
-          decoration: const BoxDecoration(
-            color: AppColors.green,
-            borderRadius: BorderRadius.vertical(bottom: Radius.circular(36)),
-          ),
-          padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
+          color: Colors.white,
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
           child: SafeArea(
             bottom: false,
             child: Column(children: [
               const Text('Analyse',
                   style: TextStyle(
-                      fontSize: 22, fontWeight: FontWeight.w800, color: AppColors.dark)),
+                      fontSize: 22, fontWeight: FontWeight.w700, color: AppColors.ink)),
               const SizedBox(height: 16),
               Row(children: [
                 Expanded(child: _Head('Solde total', money.format(store.balance), AppColors.dark)),
@@ -50,7 +49,7 @@ class StatsPage extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
             decoration: BoxDecoration(
-                color: const Color(0xFFDFF7E2), borderRadius: BorderRadius.circular(28)),
+                color: Colors.white, borderRadius: BorderRadius.circular(22), boxShadow: softShadow(0.06)),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               const Text('Revenus et dépenses (7 derniers jours)',
                   style: TextStyle(fontWeight: FontWeight.w700)),
@@ -144,7 +143,7 @@ class StatsPage extends StatelessWidget {
             ),
         ],
       ],
-    );
+    ));
   }
 }
 
